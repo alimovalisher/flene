@@ -2,18 +2,18 @@ package com.fnklabs.flene;
 
 import org.apache.ignite.cluster.ClusterMetrics;
 import org.apache.ignite.cluster.ClusterNode;
+import org.joda.time.DateTime;
 
 import java.util.Collection;
-import java.util.Date;
 
 public interface HistoryMetricsDao {
 
-    Collection<ClusterHistoryMetrics> getClusterMetrics(Period period, Date from, Date to);
+    Collection<ClusterHistoryMetrics> getClusterMetrics(Period period, DateTime from, DateTime to);
 
-    void saveClusterMetrics(ClusterMetrics clusterMetrics, Period period, Date date);
+    void saveClusterMetrics(Period period, DateTime date, ClusterMetrics clusterMetrics);
 
-    Collection<NodeHistoryMetrics> getNodeMetrics(ClusterNode clusterNode, Period period, Date from, Date to);
+    Collection<NodeHistoryMetrics> getNodeMetrics(ClusterNode clusterNode, Period period, DateTime from, DateTime to);
 
-    void saveNodeMetrics(ClusterMetrics clusterMetrics, ClusterNode clusterNode, Period period, Date date);
+    void saveNodeMetrics(ClusterNode clusterNode, Period period, DateTime date, ClusterMetrics clusterMetrics);
 
 }
