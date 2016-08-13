@@ -1,0 +1,5 @@
+dependencies {
+    compile project(":flene-parent:flene-core")
+
+    compile 'javax.servlet:javax.servlet-api:3.1.0'
+}
