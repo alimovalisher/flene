@@ -1,0 +1,44 @@
+{% extends 'cache_main.twig' %}
+
+{% block breadcrumbCurrentPage %}List{% endblock %}
+{% block content %}
+    <div class="container">
+        <h1 class="page-header">Cache List</h1>
+
+
+        <div class="row">
+
+        </div>
+
+        <div class="row">
+            <div class="table-responsive">
+                <table class="table table-condensed table-hover table-bordered table-striped">
+                    <tr>
+                        <th>Name</th>
+                        <th>CacheMode</th>
+                        <th>AtomicityMode</th>
+                        <th>MemoryMode</th>
+                        <th></th>
+                    </tr>
+                    {% for cache in caches %}
+                        <tr>
+                            <td><a href="/cache/{{ cache.name }}"> {{ cache.name }}</a></td>
+                            <td>{{ cache.cacheMode }}</td>
+                            <td>{{ cache.atomicityMode }}</td>
+                            <td>{{ cache.memoryMode }}</td>
+                            <td>
+                                <div class="btn-group">
+                                    <a class="btn btn-danger" href="/cache/{{ cache.name }}/delete"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</a>
+                                    <a class="btn btn-warning" href="/cache/{{ cache.name }}/clear"><i class="fa fa-eraser" aria-hidden="true"></i> Clear</a>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block page_title %}Flene - Ignite monitoring{% endblock %}</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.css"/>
+
+    <script src="https://use.fontawesome.com/f278a5d7a5.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.js"></script>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.min.js"></script>
+
+    {% block page_head %}{% endblock %}
+
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+            Highcharts.createElement('link', {
+                href: 'https://fonts.googleapis.com/css?family=Signika:400,700',
+                rel: 'stylesheet',
+                type: 'text/css'
+            }, null, document.getElementsByTagName('head')[0]);
+
+            Highcharts.theme = {
+                chart: {
+                    backgroundColor: null
+                }
+            };
+
+            Highcharts.setOptions(Highcharts.theme);
+        })
+    </script>
+</head>
+<body>
+<nav class="navbar navbar-inverse ">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Flene <sup>
+                    <small style="font-size: 0.6em;">Alpha</small>
+                </sup>
+                <i class="fa fa-pie-chart" aria-hidden="true"></i>
+            </a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="/cluster"><i class="fa fa-info-circle" aria-hidden="true"></i> Cluster Info</a></li>
+                <li><a href="/node"><i class="fa fa-server" aria-hidden="true"></i> Nodes</a></li>
+                <li><a href="/cache"><i class="fa fa-bars" aria-hidden="true"></i> Cache</a></li>
+                <li><a href="/service"><i class="fa fa-cogs" aria-hidden="true"></i> Service</a></li>
+
+                <li><a href="/about"><i class="fa fa-info" aria-hidden="true"></i> About</a></li>
+
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div>
+</nav>
+<div class="container">
+    <div class="row">
+        {% block breadcrumb %}
+            <ol class="breadcrumb">
+                <li class="active">Home</li>
+            </ol>
+        {% endblock %}
+    </div>
+    {% block content %}
+        <h1>Main page</h1>
+    {% endblock %}
+</div>
+
+</body>
+</html>

@@ -1,5 +1,33 @@
 dependencies {
-    compile project(":flene-parent:flene-core")
+    compile project(":flene-core")
 
-    compile 'javax.servlet:javax.servlet-api:3.1.0'
+    compile "ch.qos.logback:logback-core:$vers.logback"
+    compile "ch.qos.logback:logback-classic:$vers.logback"
+
+    compile("org.springframework.boot:spring-boot-starter-web:$vers.springboot") {
+        exclude module: "spring-boot-starter-tomcat"
+    }
+    compile("org.springframework.boot:spring-boot-starter:$vers.springboot") {
+        exclude module: "spring-boot-starter-tomcat"
+    }
+    compile("org.springframework.boot:spring-boot-starter-jetty:$vers.springboot")
+    compile("org.springframework.boot:spring-boot-starter-actuator:$vers.springboot")
+
+
+    compile "org.springframework:spring-context:$vers.spring"
+    compile "org.springframework.security:spring-security-core:$vers.springsecurity"
+    compile "org.springframework:spring-aop:$vers.spring"
+
+    compile "org.jtwig:jtwig-spring-boot-starter:$vers.jtwig"
+
+    compile "org.aspectj:aspectjrt:$vers.aspectj"
+    compile "org.aspectj:aspectjweaver:$vers.aspectj"
+
+    compile("org.apache.ignite:ignite-spring:$vers.ignite") {
+        exclude group: "org.springframework"
+    }
+
+    testCompile 'junit:junit:4.12'
+    testCompile "org.mockito:mockito-core:$vers.mockito"
+    testCompile "org.springframework:spring-test:$vers.spring"
 }

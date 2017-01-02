@@ -1,0 +1,12 @@
+{% extends "main.twig" %}
+
+{% block breadcrumb %}
+    <ol class="breadcrumb">
+        <li><a href="/">Home</a></li>
+        <li><a href="/cluster">Cluster</a></li>
+        <li class="active">{% block breadcrumbCurrentPage %}{% endblock %}</li>
+    </ol>
+{% endblock %}
+
+{% block content %}
+{% endblock %}

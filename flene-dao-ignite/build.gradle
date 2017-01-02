@@ -1,8 +1,9 @@
 dependencies {
-    compile "joda-time:joda-time:$vers.jodatime"
+    compile project(":flene-core")
+
     compile "com.intellij:annotations:$vers.intellij"
-    compile "com.google.guava:guava:$vers.guava"
     compile "org.apache.ignite:ignite-core:$vers.ignite"
-    compile "org.apache.commons:commons-lang3:$vers.lang3"
+    compile "joda-time:joda-time:$vers.jodatime"
+    compile "com.google.guava:guava:$vers.guava"
     compile "org.springframework:spring-context:$vers.spring"
 }

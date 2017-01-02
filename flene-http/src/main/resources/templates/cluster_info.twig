@@ -1,0 +1,95 @@
+{% extends 'cluster_main.twig' %}
+
+{% block breadcrumbCurrentPage %}Info{% endblock %}
+{% block content %}
+    <div class="container">
+        <h1 class="page-header">Cluster Info</h1>
+
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="jumbotron">
+                    <h2>Nodes</h2>
+
+                    {% include 'cluster_nodes_metrics.twig' with {'nodes': nodes} %}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="jumbotron">
+                    <h2>Cluster Health</h2>
+
+                    <div class="row">
+                        <div class="col-md-8"><b>Count:</b></div>
+                        <div class="col-md-4">{{ clusterMetrics.totalNodes }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8"><b>Uptime:</b></div>
+                        <div class="col-md-4">{{ number_format(clusterMetrics.upTime/1000/3600,0) }}hr</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8"><b>CPU:</b></div>
+                        <div class="col-md-4">{{ clusterMetrics.totalCpus }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8"><b>CPU Load:</b></div>
+                        <div class="col-md-4">{{ number_format(clusterMetrics.currentGcCpuLoad*100, 2) }}%</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8"><b>Avg CPU Load:</b></div>
+                        <div class="col-md-4">{{ number_format(clusterMetrics.averageCpuLoad*100, 2) }}%</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8"><b>CPU Threads:</b></div>
+                        <div class="col-md-4">{{ clusterMetrics.currentThreadCount }}/{{ clusterMetrics.maximumThreadCount }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8"><b>Heap Memory (Used/Total):</b></div>
+                        <div class="col-md-4">{{ number_format(clusterMetrics.heapMemoryUsed/1024/1024/1024, 2) }}
+                            /{{ number_format(clusterMetrics.heapMemoryTotal/1024/1024/1024, 2) }}GB
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8"><b>NonHeap Memory (Used/Total):</b></div>
+                        <div class="col-md-4">{{ number_format(clusterMetrics.nonHeapMemoryUsed/1024/1024/1024, 2) }}
+                            /{% if clusterMetrics.nonHeapMemoryTotal == -1 %}Unlimited{% else %}{{ number_format(clusterMetrics.nonHeapMemoryTotal/1024/1024/1024, 2) }}{% endif %}
+                            GB
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8"><b>Version:</b></div>
+                        <div class="col-md-4">{{ clusterMetrics.lastDataVersion }}</div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <h2>Node List</h2>
+        <div class="row">
+            <div class="table-responsive">
+                <table class="table table-condensed table-hover table-bordered table-striped">
+                    <tr>
+                        <th>Consistent ID</th>
+                        <th>ID</th>
+                        <th>Version</th>
+                        <th>Type</th>
+                        <th></th>
+                    </tr>
+                    {% for node in nodes %}
+                        <tr>
+                            <td><a href="/node/{{ node.id }}"> {{ node.consistentId }}</a></td>
+                            <td>{{ node.id }}</td>
+                            <td>{{ node.version }}</td>
+                            <td>{% if node.isClient %}Client{% else %}Server{% endif %}</td>
+                            <td><a href="/node/{{ node.id }}" class="btn btn-default"><i class="fa fa-info" aria-hidden="true"></i> Details</a></td>
+                        </tr>
+                    {% endfor %}
+
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+
+{% endblock %}

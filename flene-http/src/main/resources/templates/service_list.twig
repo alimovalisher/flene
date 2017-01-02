@@ -1,0 +1,36 @@
+{% extends 'service_main.twig' %}
+
+{% block breadcrumbCurrentPage %}List{% endblock %}
+{% block content %}
+    <div class="container">
+        <h1 class="page-header">Service List</h1>
+
+        <div class="row">
+            <div class="table-responsive">
+                <table class="table table-condensed table-hover table-bordered table-striped">
+                    <tr>
+                        <th>Name</th>
+                        <th>Total Count</th>
+                        <th>Max per node</th>
+                        <th></th>
+                    </tr>
+                    {% for service in services %}
+                        <tr>
+                            <td><a href="/service/{{ service.name }}"> {{ service.name }}</a></td>
+                            <td>{{ service.totalCount }}</td>
+                            <td>{{ service.maxPerNodeCount }}</td>
+                            <td>
+                                <div class="btn-group">
+                                    <a class="btn btn-danger" href="/service/{{ service.name }}/cancel"><i class="fa fa-trash-o" aria-hidden="true"></i> Cancel</a>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}

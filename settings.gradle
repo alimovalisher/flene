@@ -1,3 +1,5 @@
 rootProject.name = 'flene-parent'
 
-include "flene-core", "flene-http"
+include ":flene-core"
+include ":flene-http"
+include ":flene-dao-ignite"

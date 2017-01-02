@@ -1,0 +1,316 @@
+<h2>CRUD Metrics</h2>
+<div class="row">
+    <div id="clusterCrudMetricsContainer"></div>
+</div>
+<h2>Operation metrics</h2>
+<div class="row">
+    <div id="clusterOperationsMetricsContainer"></div>
+</div>
+<h2>Memory</h2>
+<div class="row">
+    <div id="clusterMemoryMetricsContainer"></div>
+</div>
+<h2>Entries</h2>
+<div class="row">
+    <div id="clusterEntriesMetricsContainer"></div>
+</div>
+
+<script>
+    var metricsData = {};
+
+    setInterval(function () {
+        $.ajax({
+            url: "/cache/metrics/{{ name }}"
+        }).done(function (metrics) {
+            metricsData = metrics;
+        });
+    }, 1000);
+
+
+    var generateFunction = function () {
+        // generate an array of random data
+        var data = [],
+            time = (new Date()).getTime(),
+            i;
+
+        for (i = -19; i <= 0; i += 1) {
+            data.push({
+                x: time + i * 1000,
+                y: 0
+            });
+        }
+        return data;
+    };
+
+    $(function () {
+        $(document).ready(function () {
+
+            Highcharts.setOptions({
+                global: {
+                    useUTC: false
+                }
+            });
+
+            Highcharts.chart('clusterCrudMetricsContainer', {
+                chart: {
+                    type: 'spline',
+                    animation: Highcharts.svg, // don't animate in old IE
+                    marginRight: 10,
+                    events: {
+                        load: function () {
+
+                            // set up the updating of the chart each second
+                            var series = this.series;
+                            setInterval(
+                                function () {
+                                    var time = (new Date()).getTime(); // current time
+
+                                    series[0].addPoint([time, metricsData.averagePutTime], true, true);
+                                    series[1].addPoint([time, metricsData.averageGetTime], true, true);
+                                    series[2].addPoint([time, metricsData.averageRemoveTime], true, true);
+
+
+                                },
+                                5000
+                            );
+                        }
+                    }
+                },
+                title: {
+                    text: 'Metrics'
+                },
+                xAxis: {
+                    type: 'datetime',
+                    tickPixelInterval: 150
+                },
+                yAxis: {
+                    title: {
+                        text: 'ms'
+                    },
+                    plotLines: [{
+                        value: 0,
+                        width: 1,
+                        color: '#808080'
+                    }]
+                },
+                tooltip: {
+                    formatter: function () {
+                        return '<b>' + this.series.name + '</b><br/>' +
+                            Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) + '<br/>' +
+                            Highcharts.numberFormat(this.y, 2);
+                    }
+                },
+                legend: {
+                    enabled: true
+                },
+                exporting: {
+                    enabled: false
+                },
+                series: [
+                    {
+                        name: 'Average PUT time',
+                        data: (generateFunction())
+                    },
+                    {
+                        name: 'Average GET time',
+                        data: (generateFunction())
+                    },
+                    {
+                        name: 'Average Remove time',
+                        data: (generateFunction())
+                    }
+                ]
+            });
+
+
+            Highcharts.chart('clusterOperationsMetricsContainer', {
+                chart: {
+                    type: 'area',
+                    events: {
+                        load: function () {
+
+                            // set up the updating of the chart each second
+                            var series = this.series;
+                            setInterval(
+                                function () {
+                                    var time = (new Date()).getTime(); // current time
+
+
+                                    series[0].addPoint([time, metricsData.cacheGets], true, true);
+                                    series[1].addPoint([time, metricsData.cachePuts], true, true);
+                                    series[2].addPoint([time, metricsData.cacheRemovals], true, true);
+
+
+                                },
+                                5000
+                            );
+                        }
+                    }
+                },
+                title: {
+                    text: 'Operation metrics'
+                },
+                xAxis: {
+                    type: 'datetime',
+                    tickPixelInterval: 150
+                },
+                yAxis: {
+                    title: {
+                        text: 'Percent'
+                    }
+                },
+                tooltip: {
+                    pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.percentage:.1f}%</b> ({point.y:,.0f} operations)<br/>',
+                    split: true
+                },
+                plotOptions: {
+                    area: {
+                        stacking: 'percent',
+                        lineColor: '#ffffff',
+                        lineWidth: 1,
+                        marker: {
+                            lineWidth: 1,
+                            lineColor: '#ffffff'
+                        }
+                    }
+                },
+                series: [
+                    {
+                        name: 'Gets',
+                        data: (generateFunction())
+                    }, {
+                        name: 'Puts',
+                        data: (generateFunction())
+                    }, {
+                        name: 'Removals',
+                        data: (generateFunction())
+                    }
+                ]
+            });
+
+            Highcharts.chart('clusterMemoryMetricsContainer', {
+                chart: {
+                    type: 'area',
+                    events: {
+                        load: function () {
+
+                            // set up the updating of the chart each second
+                            var series = this.series;
+                            setInterval(
+                                function () {
+                                    var time = (new Date()).getTime(); // current time
+
+
+                                    series[0].addPoint([time, metricsData.offHeapAllocatedSize / 1024 / 1024], true, true);
+                                    series[1].addPoint([time, metricsData.swapSize / 1024 / 1024], true, true);
+
+
+                                },
+                                5000
+                            );
+                        }
+                    }
+                },
+                title: {
+                    text: 'Allocated Size'
+                },
+                xAxis: {
+                    type: 'datetime',
+                    tickPixelInterval: 150
+                },
+                yAxis: {
+                    title: {
+                        text: 'Allocated size'
+                    }
+                },
+                tooltip: {
+                    pointFormat: '<span style="color:{series.color}">{series.name}</span>: ({point.y:,.4f} MB)<br/>',
+                    split: true,
+                    valueSuffix: ' MB'
+                },
+                plotOptions: {
+                    area: {
+                        stacking: 'normal',
+                        lineColor: '#666666',
+                        lineWidth: 1,
+                        marker: {
+                            lineWidth: 1,
+                            lineColor: '#666666'
+                        }
+                    }
+                },
+                series: [
+                    {
+                        name: 'OffHeap',
+                        data: (generateFunction())
+                    }, {
+                        name: 'Swap',
+                        data: (generateFunction())
+                    }
+                ]
+            });
+
+            Highcharts.chart('clusterEntriesMetricsContainer', {
+                chart: {
+                    type: 'area',
+                    events: {
+                        load: function () {
+
+                            // set up the updating of the chart each second
+                            var series = this.series;
+                            setInterval(
+                                function () {
+                                    var time = (new Date()).getTime(); // current time
+
+
+                                    series[0].addPoint([time, metricsData.offHeapEntriesCount], true, true);
+                                    series[1].addPoint([time, metricsData.swapEntriesCount], true, true);
+
+
+                                },
+                                5000
+                            );
+                        }
+                    }
+                },
+                title: {
+                    text: 'Entries count'
+                },
+                xAxis: {
+                    type: 'datetime',
+                    tickPixelInterval: 150
+                },
+                yAxis: {
+                    title: {
+                        text: 'Count'
+                    }
+                },
+                tooltip: {
+                    split: true
+                },
+                plotOptions: {
+                    area: {
+                        stacking: 'normal',
+                        lineColor: '#666666',
+                        lineWidth: 1,
+                        marker: {
+                            lineWidth: 1,
+                            lineColor: '#666666'
+                        }
+                    }
+                },
+                series: [
+                    {
+                        name: 'OffHeap',
+                        data: (generateFunction())
+                    }, {
+                        name: 'Swap',
+                        data: (generateFunction())
+                    }
+                ]
+            });
+        })
+        ;
+    })
+    ;
+</script>

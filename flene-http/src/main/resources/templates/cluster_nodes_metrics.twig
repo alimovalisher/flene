@@ -1,0 +1,51 @@
+<div id="nodesContainer" class="container">
+</div>
+
+<script>
+    var nodes = [
+        {% for node in nodes %}
+        [
+            '{{ node.consistentId }}',
+            {{ 100/nodes.size }}
+        ],
+        {% endfor %}
+    ];
+
+    $(function () {
+        Highcharts.chart('nodesContainer', {
+            exporting: {
+                enabled: false
+            },
+            chart: {
+                type: 'pie',
+                options3d: {
+                    enabled: true,
+                    alpha: 45
+                }
+            },
+            title: {
+                text: ''
+            },
+            plotOptions: {
+                pie: {
+                    innerSize: 100,
+                    depth: 45,
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: false
+                    },
+                }
+            },
+            series: [
+                {
+                    name: 'Nodes',
+//                    colorByPoint: true,
+                    size: '80%',
+                    innerSize: '60%',
+                    data: nodes
+                }
+            ]
+        });
+    });
+</script>

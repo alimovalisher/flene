@@ -1,0 +1,38 @@
+{% extends 'service_main.twig' %}
+
+{% block breadcrumbCurrentPage %}{{ service.name }}{% endblock %}
+{% block content %}
+    <div class="container">
+        <h1 class="page-header">&laquo;{{ service.name }}&raquo;</h1>
+
+        <h2>Info</h2>
+        <div class="row">
+            <div class="col-md-4"><b>Name:</b></div>
+            <div class="col-md-8">{{ service.name }}</div>
+        </div>
+        <div class="row">
+            <div class="col-md-4"><b>Total Count:</b></div>
+            <div class="col-md-8">{{ service.totalCount }}</div>
+        </div>
+        <div class="row">
+            <div class="col-md-4"><b>Max per node:</b></div>
+            <div class="col-md-8">{{ service.maxPerNodeCount }}</div>
+        </div>
+
+
+        <h2>Origin Node</h2>
+
+        <div class="row">
+            <div class="col-md-4"><b>ID:</b></div>
+            <div class="col-md-8"><a href="/node/{{ originNode.id }}">{{ originNode.id }}</a></div>
+        </div>
+        <div class="row">
+            <div class="col-md-4"><b>Consistent ID:</b></div>
+            <div class="col-md-8">{{ originNode.consistentId }}</div>
+        </div>
+
+        <h2>Holder</h2>
+
+        {% include 'service_list_block.twig' with {'topology': topology } %}
+    </div>
+{% endblock %}

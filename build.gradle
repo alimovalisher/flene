@@ -21,15 +21,31 @@ subprojects {
     if (project.hasProperty("teamcity")) {
         project.version = project.teamcity["build.number"]
     }
-
-    println("App module version:" + project.version)
-
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
 
     compileJava.options.encoding = 'UTF-8'
     compileTestJava.options.encoding = 'UTF-8'
 
+    ext {
+        vers = [
+                aspectj        : '1.8.9',
+                ignite         : '1.8.0',
+                mockito        : '2.2.9',
+                spring         : '4.3.4.RELEASE',
+                springboot     : '1.4.2.RELEASE',
+                springsecurity : '4.2.0.RELEASE',
+                jodatime       : '2.9.2',
+                guava          : '20.0',
+                intellij       : '12.0',
+                logback        : '1.1.8 ',
+                jtwig          : '5.63',
+                'lang3': '3.5'
+
+        ]
+    }
+
+    println("App module version:" + project.version)
 
     configurations {
         all*.exclude module: 'slf4j-log4j12'
@@ -41,6 +57,7 @@ subprojects {
     repositories {
         mavenLocal()
         mavenCentral()
+        jcenter()
     }
 
     jar {

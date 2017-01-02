@@ -1,0 +1,81 @@
+{% extends 'node_main.twig' %}
+
+{% block breadcrumbCurrentPage %}{{ node.id }}{% endblock %}
+
+{% block content %}
+    <div class="container">
+    <h1 class="page-header">&laquo;{{ node.id }}&raquo; <span class="label label-default">{% if node.isClient %}Client{% else %}Server{% endif %}</span></h1>
+
+    <div class="row">
+
+        <div class="container container-fluid">
+            <div class="row">
+                <div class="col-md-4">
+                    <strong>ID</strong>
+                </div>
+                <div class="col-md-8">
+                    {{ node.id }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <strong>Consistent Id</strong>
+                </div>
+                <div class="col-md-8">
+                    {{ node.consistentId }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <strong>Addresses</strong>
+                </div>
+                <div class="col-md-8">
+                    {{ node.addresses }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <strong>Host Names</strong>
+                </div>
+                <div class="col-md-8">
+                    {{ node.hostNames }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <strong>Order</strong>
+                </div>
+                <div class="col-md-8">
+                    {{ node.order }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <strong>Version</strong>
+                </div>
+                <div class="col-md-8">
+                    {{ node.version }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <strong>Attributes</strong>
+                </div>
+                <div class="col-md-8">
+
+                    {% for key,value in node.attributes %}
+                        <div class="row">
+                            <div class="col-md-4">
+                                <strong>{{ key }}</strong>
+                            </div>
+                            <div class="col-md-8">
+                                {{ value }}
+                            </div>
+                        </div>
+                    {% endfor %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
